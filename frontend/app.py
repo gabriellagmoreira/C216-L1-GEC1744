@@ -51,13 +51,13 @@ def atualizar_professor_form(professor_id):
     response = requests.get(f"{API_BASE_URL}/listar")
     #filtrando apenas o professor correspondente ao ID
     professores = [professor for professor in response.json() if professor['id'] == professor_id]
-    if len(professo) == 0:
+    if len(professores) == 0:
         return "Professor não encontrado", 404
     professor = professores[0]
     return render_template('atualizar.html', professor=professor)
 
 # Rota para enviar os dados do formulário de edição de professor para a API
-@app.route('/atualizar/<int:aluno_id>', methods=['POST'])
+@app.route('/atualizar/<int:professor_id>', methods=['POST'])
 def atualizar_professor(professor_id):
     nome = request.form['nome']
     disciplina = request.form['disciplina']

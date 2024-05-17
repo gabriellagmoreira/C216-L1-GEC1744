@@ -30,7 +30,7 @@ async function initDatabase() {
 server.use(restify.plugins.bodyParser());
 
 // Endpoint para inserir um novo Professor
-server.post('/api/v1/Professor/inserir', async (req, res, next) => {
+server.post('/api/v1/professor/inserir', async (req, res, next) => {
     const { nome, disciplina, email } = req.body;
 
     try {
@@ -39,16 +39,16 @@ server.post('/api/v1/Professor/inserir', async (req, res, next) => {
           [nome, disciplina, email]
         );
         res.send(201, result.rows[0]);
-        console.log('Professor inserido com sucesso:', result.rows[0]);
+        console.log('professor inserido com sucesso:', result.rows[0]);
       } catch (error) {
-        console.error('Erro ao inserir Professor:', error);
+        console.error('Erro ao inserir professor:', error);
         res.send(500, { message: 'Erro ao inserir Professor' });
       }
     return next();
 });
 
 // Endpoint para listar todos os professores
-server.get('/api/v1/Professor/listar', async (req, res, next) => {
+server.get('/api/v1/professor/listar', async (req, res, next) => {
     try {
       const result = await pool.query('SELECT * FROM professores');
       res.send(result.rows);
@@ -61,7 +61,7 @@ server.get('/api/v1/Professor/listar', async (req, res, next) => {
   });
 
 // Endpoint para atualizar um Professor existente
-server.post('/api/v1/Professor/atualizar', async (req, res, next) => {
+server.post('/api/v1/professor/atualizar', async (req, res, next) => {
     const { id, nome, disciplina, email } = req.body;
   
     try {
@@ -70,13 +70,13 @@ server.post('/api/v1/Professor/atualizar', async (req, res, next) => {
         [nome, disciplina, email, id]
       );
       if (result.rowCount === 0) {
-        res.send(404, { message: 'Professor não encontrado' });
+        res.send(404, { message: 'professor não encontrado' });
       } else {
         res.send(200, result.rows[0]);
-        console.log('Professor atualizado com sucesso:', result.rows[0]);
+        console.log('professor atualizado com sucesso:', result.rows[0]);
       }
     } catch (error) {
-      console.error('Erro ao atualizar Professor:', error);
+      console.error('Erro ao atualizar professor:', error);
       res.send(500, { message: 'Erro ao atualizar Professor' });
     }
   
@@ -84,19 +84,19 @@ server.post('/api/v1/Professor/atualizar', async (req, res, next) => {
   });
 
 // Endpoint para excluir um Professor pelo ID
-server.post('/api/v1/Professor/excluir', async (req, res, next) => {
+server.post('/api/v1/professor/excluir', async (req, res, next) => {
     const { id } = req.body;
   
     try {
-      const result = await pool.query('DELETE FROM professores WHERE id = $1', [id]);
+      const result = await pool.query('DELETE FROM professor WHERE id = $1', [id]);
       if (result.rowCount === 0) {
-        res.send(404, { message: 'Professor não encontrado' });
+        res.send(404, { message: 'professor não encontrado' });
       } else {
-        res.send(200, { message: 'Professor excluído com sucesso' });
-        console.log('Professor excluído com sucesso');
+        res.send(200, { message: 'professor excluído com sucesso' });
+        console.log('professor excluído com sucesso');
       }
     } catch (error) {
-      console.error('Erro ao excluir Professor:', error);
+      console.error('Erro ao excluir professor:', error);
       res.send(500, { message: 'Erro ao excluir Professor' });
     }
   
@@ -105,8 +105,8 @@ server.post('/api/v1/Professor/excluir', async (req, res, next) => {
 // endpoint para resetar o banco de dados
 server.del('/api/v1/database/reset', async (req, res, next) => {
     try {
-      await pool.query('DROP TABLE IF EXISTS professores');
-      await pool.query('CREATE TABLE professores (id SERIAL PRIMARY KEY, nome VARCHAR(255) NOT NULL, disciplina VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)');
+      await pool.query('DROP TABLE IF EXISTS professor');
+      await pool.query('CREATE TABLE professor (id SERIAL PRIMARY KEY, nome VARCHAR(255) NOT NULL, disciplina VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)');
       res.send(200, { message: 'Banco de dados resetado com sucesso' });
       console.log('Banco de dados resetado com sucesso');
     } catch (error) {

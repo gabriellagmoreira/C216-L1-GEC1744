@@ -88,7 +88,7 @@ server.post('/api/v1/professor/excluir', async (req, res, next) => {
     const { id } = req.body;
   
     try {
-      const result = await pool.query('DELETE FROM professor WHERE id = $1', [id]);
+      const result = await pool.query('DELETE FROM professores WHERE id = $1', [id]);
       if (result.rowCount === 0) {
         res.send(404, { message: 'professor não encontrado' });
       } else {
@@ -105,8 +105,8 @@ server.post('/api/v1/professor/excluir', async (req, res, next) => {
 // endpoint para resetar o banco de dados
 server.del('/api/v1/database/reset', async (req, res, next) => {
     try {
-      await pool.query('DROP TABLE IF EXISTS professor');
-      await pool.query('CREATE TABLE professor (id SERIAL PRIMARY KEY, nome VARCHAR(255) NOT NULL, disciplina VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)');
+      await pool.query('DROP TABLE IF EXISTS professores');
+      await pool.query('CREATE TABLE professores (id SERIAL PRIMARY KEY, nome VARCHAR(255) NOT NULL, disciplina VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)');
       res.send(200, { message: 'Banco de dados resetado com sucesso' });
       console.log('Banco de dados resetado com sucesso');
     } catch (error) {
